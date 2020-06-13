@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountNotExist" xml:space="preserve">
+    <value>Account dos not exist.</value>
+  </data>
+  <data name="ActivatedSuccessfuly" xml:space="preserve">
+    <value>Activated Successfully.</value>
+  </data>
+  <data name="AmountIsHi" xml:space="preserve">
+    <value>Amount is more than the current balance.</value>
+  </data>
+  <data name="BookedSuccessfully" xml:space="preserve">
+    <value>Booked Successfully</value>
+  </data>
+  <data name="CompletiedSuccessfully" xml:space="preserve">
+    <value>Completied Successfully.</value>
+  </data>
+  <data name="DeActivatedSuccessfuly" xml:space="preserve">
+    <value>The account has been Activated successfully.</value>
+  </data>
+  <data name="DeletedSuccessfuly" xml:space="preserve">
+    <value>Deleted Successfully.</value>
+  </data>
+  <data name="errAmount" xml:space="preserve">
+    <value>Amount can not be empty.</value>
+  </data>
+  <data name="errBookingFeesEnter" xml:space="preserve">
+    <value>Please enter the booking fee's.</value>
+  </data>
+  <data name="errBranchAlreadyThere" xml:space="preserve">
+    <value>This Branch Name is already taken, try another one.</value>
+  </data>
+  <data name="errCategoryNameExist" xml:space="preserve">
+    <value>Category name already exist.</value>
+  </data>
+  <data name="errCloseTime" xml:space="preserve">
+    <value>Please set the closing time.</value>
+  </data>
+  <data name="errCPass" xml:space="preserve">
+    <value>Please confirm the password.</value>
+  </data>
+  <data name="errDescription" xml:space="preserve">
+    <value>Please enter the ticket description.</value>
+  </data>
+  <data name="errEmail" xml:space="preserve">
+    <value>Please add the e-mail address.</value>
+  </data>
+  <data name="errFromAr" xml:space="preserve">
+    <value>Please enter the ticket start in arabic.</value>
+  </data>
+  <data name="errFromEng" xml:space="preserve">
+    <value>Please enter the ticket start in english.</value>
+  </data>
+  <data name="errItemDescription" xml:space="preserve">
+    <value>Please Add the Item Description.</value>
+  </data>
+  <data name="errItemDiscountAmount" xml:space="preserve">
+    <value>Please set the Item Discount Amount.</value>
+  </data>
+  <data name="errItemDiscountFrom" xml:space="preserve">
+    <value>Please set the Discount starting quantity.</value>
+  </data>
+  <data name="errItemDiscountPercentage" xml:space="preserve">
+    <value>Plese set the Item Discount Percentage.</value>
+  </data>
+  <data name="errItemDiscountSet" xml:space="preserve">
+    <value>Please set the Discount type.</value>
+  </data>
+  <data name="errItemGarnteeDate" xml:space="preserve">
+    <value>Please set the Garntee days.</value>
+  </data>
+  <data name="errItemName" xml:space="preserve">
+    <value>Please add the Item Name.</value>
+  </data>
+  <data name="errLogin" xml:space="preserve">
+    <value>Error in user name or password.</value>
+  </data>
+  <data name="errName" xml:space="preserve">
+    <value>Please enter the name.</value>
+  </data>
+  <data name="errNameAr" xml:space="preserve">
+    <value>Please enter the arabic name.</value>
+  </data>
+  <data name="errNameEng" xml:space="preserve">
+    <value>Please enter the english name.</value>
+  </data>
+  <data name="errNameExist" xml:space="preserve">
+    <value>The name is already exist.</value>
+  </data>
+  <data name="errOldPass" xml:space="preserve">
+    <value>Please enter your old password.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="errOwnerSet" xml:space="preserve">
+    <value>Please Add the owner first.</value>
+  </data>
+  <data name="errPass" xml:space="preserve">
+    <value>Please enter the password.</value>
+  </data>
+  <data name="errPassMatch" xml:space="preserve">
+    <value>Password did not match.</value>
+  </data>
+  <data name="errPhone" xml:space="preserve">
+    <value>Please enter the user phone number.</value>
+  </data>
+  <data name="errPhoneOrEmail" xml:space="preserve">
+    <value>E-mail or Phone is already registerd to a user, please try again.</value>
+  </data>
+  <data name="errPleaseAddClinicAdmin" xml:space="preserve">
+    <value>Please Add Clinic Admin or Activate hem.</value>
+  </data>
+  <data name="errPrice" xml:space="preserve">
+    <value>Please enter the ticket price.</value>
+  </data>
+  <data name="errServicePrice" xml:space="preserve">
+    <value>Please add the service price.</value>
+  </data>
+  <data name="errSetEndTime" xml:space="preserve">
+    <value>Set End Time</value>
+  </data>
+  <data name="errSetPatientLimit" xml:space="preserve">
+    <value>Set Patient Limit</value>
+  </data>
+  <data name="errSetStartTime" xml:space="preserve">
+    <value>Set Start Time</value>
+  </data>
+  <data name="errStartTime" xml:space="preserve">
+    <value>Please set the starting time.</value>
+  </data>
+  <data name="errTitle" xml:space="preserve">
+    <value>Please enter the ticket title.</value>
+  </data>
+  <data name="errToAr" xml:space="preserve">
+    <value>Please enter the ticket destination in arabic.</value>
+  </data>
+  <data name="errToEng" xml:space="preserve">
+    <value>Please enter the ticket destination in english.</value>
+  </data>
+  <data name="errToId" xml:space="preserve">
+    <value>Please add the recipient account address.</value>
+  </data>
+  <data name="errUserName" xml:space="preserve">
+    <value>The user name most not be empty.</value>
+  </data>
+  <data name="HiddenSuccessfully" xml:space="preserve">
+    <value>Hidden Successfully</value>
+  </data>
+  <data name="msCompleteThisTransaction" xml:space="preserve">
+    <value>Complete this Transaction?</value>
+  </data>
+  <data name="msgAcivatethisAccount" xml:space="preserve">
+    <value>Activate this Account?</value>
+  </data>
+  <data name="msgBookThisTiket" xml:space="preserve">
+    <value>Book This Tiket</value>
+  </data>
+  <data name="msgDeAcivatethisAccount" xml:space="preserve">
+    <value>De-Activate this account?</value>
+  </data>
+  <data name="msgDelete" xml:space="preserve">
+    <value>Delete This?</value>
+  </data>
+  <data name="msgHideFromClients" xml:space="preserve">
+    <value>Hide From Clients</value>
+  </data>
+  <data name="msgPassReset" xml:space="preserve">
+    <value>Reset this user password? (He most enter a new password in his first login).</value>
+  </data>
+  <data name="msgRestoreThisBranch" xml:space="preserve">
+    <value>Restore this branch?</value>
+  </data>
+  <data name="msgRestoreThisUser" xml:space="preserve">
+    <value>Restore This User?</value>
+  </data>
+  <data name="msgRetrieveThisClinic" xml:space="preserve">
+    <value>Retrieve This Clinic?</value>
+  </data>
+  <data name="msgRetrieveThisUser" xml:space="preserve">
+    <value>Retrieve This User?</value>
+  </data>
+  <data name="msgRollBackTransaction" xml:space="preserve">
+    <value>Roll-back this Transaction?</value>
+  </data>
+  <data name="msgSetToDefault" xml:space="preserve">
+    <value>Set as default?</value>
+  </data>
+  <data name="NoAdminSet" xml:space="preserve">
+    <value>No Admin Set</value>
+  </data>
+  <data name="NoTicketsAvilableRightNow" xml:space="preserve">
+    <value>No Tickets Avilable Right Now</value>
+  </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>Restored Successfully</value>
+  </data>
+  <data name="RetrievedSuccessfuly" xml:space="preserve">
+    <value>Retrieved Successfully</value>
+  </data>
+  <data name="RolledBackSuccessfully" xml:space="preserve">
+    <value>Rolled Back Successfully.</value>
+  </data>
+  <data name="SavedSuccessfuly" xml:space="preserve">
+    <value>Saved Successfuly</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="TransactionSchedueldSuccessfully" xml:space="preserve">
+    <value>Transaction Schedueld Successfully.</value>
+  </data>
+  <data name="UpdatedSuccessfuly" xml:space="preserve">
+    <value>Updated Successfully</value>
+  </data>
+  <data name="CommentIns" xml:space="preserve">
+    <value>Press enter to post comment</value>
+  </data>
+  <data name="LoginToComment" xml:space="preserve">
+    <value>Please Login to be able to comment.</value>
+  </data>
+  <data name="LoginToPost" xml:space="preserve">
+    <value>Please Login to be able to add new post.</value>
+  </data>
+  <data name="errAccept" xml:space="preserve">
+    <value>Please accept the terms first.</value>
+  </data>
+  <data name="errPhoneOrEmailEnter" xml:space="preserve">
+    <value>Please enter your phon or an e-mail.</value>
+  </data>
+  <data name="errPassWeak" xml:space="preserve">
+    <value>Weak Password.</value>
+  </data>
+</root>

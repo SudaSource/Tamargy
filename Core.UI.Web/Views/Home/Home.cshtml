@@ -1,0 +1,337 @@
+﻿@using Core.Data.Models
+@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    bool allowComment = false;
+    try
+    {
+        User user = null;
+        var cookie = Request.Cookies["User"];
+        if (cookie != null)
+        {
+            long id = long.Parse(cookie["UserId"]);
+            user = UserControle.GetUser(id);
+            if (user!= null)
+            {
+                allowComment = true;
+            }
+        }
+        else
+        {
+        }
+    }
+    catch (Exception e)
+    {
+        allowComment = false;
+    }
+
+}
+<div id="_postForm">
+
+</div>
+
+@{
+    if (allowComment)
+    {
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="frmTitle" class="card-title">@Options.New @Lang.Post</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row" id="_postBody">
+
+                            <div class="col-md-12">
+                                <button class="btn btn-block btn-success" id="btn" onclick="New()">@Options.New</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-9">
+                <div class="alert alert-warning"><a href="@Url.Action("Index","Home")">@Msg.LoginToPost </a></div>
+            </div>
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h3 id="frmTitle" class="card-title">@Lang.Search</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row" id="_postBody">
+
+                    <div class="col-md-9">
+                        <input type="text" id="_search" class="form-control" placeholder="@Lang.WhatAreYouLookingFor" />
+
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-block btn-default" id="btnSearch" onkeypress="SearchBy(event)" onclick="Search()">@Lang.Search</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+<div id="resultCard" style="display: none;">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <span class="text-info" id="_result"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loading">
+        <div id="fountainG">
+            <div id="fountainG_1" class="fountainG"></div>
+            <div id="fountainG_2" class="fountainG"></div>
+            <div id="fountainG_3" class="fountainG"></div>
+            <div id="fountainG_4" class="fountainG"></div>
+            <div id="fountainG_5" class="fountainG"></div>
+            <div id="fountainG_6" class="fountainG"></div>
+            <div id="fountainG_7" class="fountainG"></div>
+            <div id="fountainG_8" class="fountainG"></div>
+        </div>
+    </div>
+    <div class="row" id="_posts">
+     
+    </div>
+</div>
+
+<div class="col-md-8">
+    <div class="card">
+        <div class="card-header">
+            <h3 id="frmTitle" class="card-title">@Lang.Sponsors</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="https://mazinhost.com/" target="_blank">
+                        <img class="attachment-img" src="~/Content/eng/dist/img/mazinHost.png" alt="User Image">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+    <div class="card">
+        <div class="card-header">
+            <h3 id="frmTitle" class="card-title">@Lang.Sponsors</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="http://sudabase.com/" target="_blank">
+                        <img class="attachment-img" src="~/Content/eng/dist/img/sudabase.png" alt="User Image">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function() {
+            //LoadData();
+            $("#_search").val("@ViewBag.Q");
+            LoadPosts();
+        });
+
+        function SearchBy(e) {
+            if (e.keyCode === 13) {
+                Search();
+            }
+        }
+
+        function Search() {
+            var key = $("#_search").val();
+            $("#loading").show();
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetPosts", "Posts")",
+                data: { search: key},
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $("#loading").hide();
+                    GetPosts(data);
+                    $("#_result").text("@Lang.Result: " + data.length);
+                    $("#resultCard").show("slow");
+                }
+            });
+        }
+
+        function New() {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("NewPost", "Posts")",
+                datatype: "json",
+                traditional: true,
+                success: function(data) {
+                    if (data != []) {
+                        $("#_postBody").empty("slow");
+                        $("#_postBody").append(data);
+                    } else {
+                        toastr.error('@Msg.Error');
+                    }
+                }
+            });
+        }
+
+        function Save() {
+            var nameAr = $("#nameAr").val();
+            var nameEng = $("#nameEng").val();
+            var type = $("select#type option").filter(":selected").val();
+            var post = $("#post").val();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Save", "Posts")",
+                data: {nameAr: nameAr, nameEng: nameEng, type: type, post: post},
+                datatype: "json",
+                traditional: true,
+                success: function(state) {
+                    if (state) {
+                        $("#_postBody").hide("slow");
+                        LoadPosts();
+                        toastr.success('@Msg.SavedSuccessfuly');
+                        $("#_postBody").empty();
+                        $("#_postBody")
+                            .append(
+                                ' <div class="col-md-12"><button class="btn btn-block btn-success" id="btn" onclick="New()">@Options.New</button></div>');
+                        $("#_postBody").show("slow");
+                    } else {
+                        toastr.error('@Msg.Error')
+                    }
+                }
+            });
+        }
+
+        function LoadPosts() {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("GetPosts", "Posts", new {search = ViewBag.Q})",
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $("#loading").hide();
+                    GetPosts(data);
+                    $("#_result").text("@Lang.Result: " + data.length);
+                    $("#resultCard").show("slow");
+                }
+            });
+        }
+
+        function LoadSponsors() {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Sponsors", "Posts")",
+                datatype: "json",
+                traditional: true,
+                success: function(dt) {
+                    $("#_posts").append(dt);
+                }
+            });
+        }
+        function GetPosts(data) {
+            $("#_posts").empty();
+            // LoadSponsors();
+            for (var d in data) {
+                var p = data[d];
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetPost", "Posts")",
+                    data:{id:p},
+                    datatype: "json",
+                    traditional: true,
+                    success: function(dt) {
+                        $("#_posts").prepend(dt);
+                    }
+                });
+            }
+        }
+
+        function DeletePost(id) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeletePost", "Posts")",
+                data: { id: id},
+                datatype: "json",
+                traditional: true,
+                success: function(dt) {
+                    toastr.error('@Msg.DeletedSuccessfuly');
+                    LoadPosts();
+                }
+            });
+        }
+        function Comment(e,id) {
+            if (e.keyCode === 13) {
+                var comment = $("#_comm_" + id).val();
+                if (comment != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Comment", "Posts")",
+                        data:{id:id, text:comment},
+                        datatype: "json",
+                        traditional: true,
+                        success: function(data) {
+                        }
+                    });
+                }
+            }
+        }
+
+        function DeleteComment(id) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteComment", "Posts")",
+                data:{id:id},
+                datatype: "json",
+                traditional: true,
+                success: function(data) {
+                    LoadPosts();
+                }
+            });
+        }
+
+        function GetPostForm() {
+
+        }
+        function Like(id,state) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Like", "Posts")",
+                data:{id:id},
+                datatype: "json",
+                traditional: true,
+                success: function(data) {
+                    LoadPosts();
+                }
+            });
+        }
+    </script>
+}

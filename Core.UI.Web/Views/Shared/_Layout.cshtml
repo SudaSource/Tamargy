@@ -1,0 +1,121 @@
+﻿@using Core.UI.Web.App_Start.Resources
+
+@{
+    string lang = "en";
+    try
+    {
+        HttpCookie langCookie = Request.Cookies["culture"];
+        if (langCookie != null)
+        {
+            lang = langCookie.Value;
+        }
+    }
+    catch (Exception e)
+    {
+         lang = "en";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta />
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/eng/dist/img/logo.ico" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/eng/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Content/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/eng/dist/css/adminlte.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/Content/eng/plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="~/Content/eng/plugins/toastr/toastr.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+@{
+    if (lang == "en")
+    {
+        <link rel="stylesheet" href="~/Content/eng/plugins/fontawesome-free/css/all.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <!-- iCheck -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <!-- JQVMap -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/jqvmap/jqvmap.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="~/Content/eng/dist/css/adminlte.min.css">
+        <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/daterangepicker/daterangepicker.css">
+        <!-- summernote -->
+        <link rel="stylesheet" href="~/Content/eng/plugins/summernote/summernote-bs4.css">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    }
+    else
+    {
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="~/Content/ar/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="~/Content/ar/plugins/iCheck/square/blue.css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <link rel="stylesheet" href="~/Content/ar/dist/css/bootstrap-rtl.min.css">
+        <link rel="stylesheet" href="~/Content/ar/dist/css/custom-style.css">
+    }
+}
+</head>
+<body class="hold-transition login-page">
+<div class="modal fade" id="modal-primary">
+    <div class="modal-dialog">
+        <div class="modal-content bg-default">
+            <div class="modal-header">
+                <h4 class="modal-title">@Lang.TermsAndConditions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>@Lang.T</p>
+            </div>
+            @*<div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-light">Save changes</button>
+            </div>*@
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@RenderBody()
+<!-- /.login-card -->
+<!-- jQuery 2.2.3 -->
+
+<script src="~/Content/ar/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/Content/ar/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- iCheck -->
+<script src="~/Content/ar/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass   : 'iradio_square-blue',
+            increaseArea : '20%' // optional
+        })
+    })
+</script>
+<script src="~/Content/eng/plugins/toastr/toastr.min.js"></script>
+
+
+@RenderSection("scripts", required: false)
+</body>
+</html>

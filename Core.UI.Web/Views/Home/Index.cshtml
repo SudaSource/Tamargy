@@ -1,0 +1,174 @@
+﻿@using Core.Data.Models
+@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    try
+    {
+
+        string lang = "en";
+        User user = null;
+        var cookie = Request.Cookies["User"];
+        if (cookie != null)
+        {
+            long id = long.Parse(cookie["UserId"]);
+            user = UserControle.GetUser(id);
+            if (user != null)
+            {
+
+                Response.Redirect("~/Home/Home");
+
+            }
+        }
+        
+      
+    }
+    catch { }
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @{
+            string dev = " | ";
+            int count = LanguageMang.AvailableLanguages.Count;
+            foreach (var i in LanguageMang.AvailableLanguages)
+            {
+                <a href="@if (Request.Url != null)
+                         {
+                             @Url.Action("ChangeLanguage", "Home",
+                                 new
+                                 {
+                                     lang = i.LanguageCultureName,
+                                     url = Request.Url.AbsoluteUri
+                                 })
+                         }">
+                    @i.LanguageFullName
+                </a>
+                if (count != 1)
+                {
+                    @dev
+                }
+                count--;
+            }
+        }
+
+    </div>
+</div>
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="@Url.Action("Search","Home")"><b>@Lang.ApplicationName</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">@Lang.SinginToStart</p>
+
+            <div class="input-group mb-3">
+                <input type="text" id="name" class="form-control" placeholder="@Lang.UserName">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-envelope"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" id="pass"  class="form-control" placeholder="@Lang.Password">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8" style="display: none;">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">
+                            @*@Lang.RememberMe*@
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                    
+                    <button type="button" id="btnLogin" onclick="Login()" class="btn btn-primary btn-block">@Lang.Login</button>
+                </div>
+                <!-- /.col -->
+            </div>
+            <p class="mb-0">
+                <hr/>
+                <a href="@Url.Action("Register", "Home")" class="text-center">@Lang.Register</a>
+            </p>
+          
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+        });
+
+        function Login() {
+            var url = "";
+            $("#btnLogin").prepend('<i class="fa fa-spinner fa-spin" id="load"></i>');
+           
+            $("#btnLogin").addClass('disabled');
+            var name = $("#name").val();
+            var pass = $("#pass").val();
+            var rememberMe = $('#rememberMe').is(':checked');
+
+            if (name == "") {
+                toastr.error('@Msg.errPhoneOrEmailEnter');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Login');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+            if (pass == "" ) {
+                toastr.error('@Msg.errPass');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Login');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+
+            $("#btnLogin").hide("slow");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Login", "Auth")",
+                data: { name:name, pass: pass, rememberMe: rememberMe },
+                success: function (data) {
+                    if (data.state) {
+                        if (url != "") {
+                            window.location.href = url;
+                        } else {
+                            window.location.href = "/" + data.url.RouteValues[1].Value + "/" + data.url.RouteValues[0].Value;
+                        }
+                    } else {
+                        toastr.error("@Msg.AccountNotExist");
+                        $('#btnLogin').find('i').remove();
+                        $("#btnLogin").removeClass('disabled');
+                        $("#btnLogin").show("slow");
+                    }
+                },
+                error: function (xhr) {
+                    $('#btnLogin').find('i').remove();
+                    $("#btnLogin").removeClass('disabled');
+                    $("#btnLogin").show("slow");
+                }
+            });
+            $("#btnLogin").show("slow");
+
+            $('#btnLogin').find('i').remove();
+            $("#btnLogin").removeClass('disabled');
+            $("#btnLogin").show("slow");
+        }
+    </script>
+}

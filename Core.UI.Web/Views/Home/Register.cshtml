@@ -1,0 +1,227 @@
+﻿@using Core.Data.Models
+@using Core.Data.Types
+@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    try
+    {
+
+        string lang = "en";
+        User user = null;
+        var cookie = Request.Cookies["User"];
+        if (cookie != null)
+        {
+            long id = long.Parse(cookie["UserId"]);
+            user = UserControle.GetUser(id);
+            if (user != null)
+            {
+
+                Response.Redirect("~/Home/Home");
+
+            }
+        }
+        
+      
+    }
+    catch { }
+}
+
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="@Url.Action("Search","Home")"><b>@Lang.ApplicationName</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">@Lang.RegisterToStart</p>
+            <a href="@Url.Action("ChangeLanguage", "Home",new{lang = LanguageMang.AvailableLanguages[0].LanguageCultureName,url = Request.Url.AbsoluteUri})">
+                @LanguageMang.AvailableLanguages[0].LanguageFullName
+            </a>
+            |
+            <a href="@Url.Action("ChangeLanguage", "Home",new{lang = LanguageMang.AvailableLanguages[1].LanguageCultureName,url = Request.Url.AbsoluteUri})">
+                @LanguageMang.AvailableLanguages[1].LanguageFullName
+            </a>
+            <hr/>
+            <div class="input-group mb-3">
+                <input type="text" id="name" class="form-control" placeholder="@Lang.UserName">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-group mb-3">
+                <input type="text" id="email" class="form-control" placeholder="@Lang.Email">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-envelope"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" id="phone" class="form-control" placeholder="@Lang.Phone">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-phone"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <select id="role" class="form-control">
+                    <option value="@Role.Citizen">@Lang.Citizen</option>
+                    <option value="@Role.Doctor">@Lang.Doctor</option>
+                    <option value="@Role.Pharmacist">@Lang.Pharmacist</option>
+                </select>
+            </div>
+
+            <div class="input-group mb-3">
+                <select id="Gender" class="form-control">
+                    <option value="@Gender.Male">@Lang.Male</option>
+                    <option value="@Gender.Female">@Lang.Female</option>
+                    <option value="@Gender.Other">@Lang.Other</option>
+                </select>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="password" id="pass" class="form-control" placeholder="@Lang.Password">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" id="cpass" class="form-control" placeholder="@Lang.CPassword">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    @Lang.ByClickingOnRegisterYourAgreeing 
+                    @Lang.AgreeTo <a href="#" data-toggle="modal" data-target="#modal-primary">@Lang.TermsAndConditions</a>
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                    <button type="button" id="btnLogin" onclick="Register()" class="btn btn-primary btn-block">@Lang.Register</button>
+                </div>
+                <!-- /.col -->
+            </div>
+            <p class="mb-0">
+                <hr/>
+                <a href="@Url.Action("Index", "Home")" class="text-center">@Lang.Login</a>
+            </p>
+
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+    
+</div>
+
+       
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+        });
+        function Register() {
+            var url = "";
+            $("#btnLogin").append(' <i class="fa fa-spinner fa-spin" id="load"></i>');
+            $("#btnLogin").addClass('disabled');
+            var name = $("#name").val();
+            var phone = $("#phone").val();
+            var email = $("#email").val();
+            var pass = $("#pass").val();
+            var cpass = $("#cpass").val();
+            var accept = $('#accept').is(':checked');
+            var gender = $("select#Gender option").filter(":selected").val();
+            var role = $("select#role option").filter(":selected").val();
+
+            if (phone == "" && email == "") {
+                toastr.error('@Msg.errPhoneOrEmailEnter');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+            if (pass == "" ) {
+                toastr.error('@Msg.errPass');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+            if (pass.length < 6) {
+                toastr.error('@Msg.errPassWeak');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+
+            if (cpass == "" ) {
+                toastr.error('@Msg.errCPass');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+            if (cpass != pass) {
+                toastr.error('@Msg.errCPass');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+
+            if (!accept) {
+                toastr.error('@Msg.errAccept');
+                $("#btnLogin").empty();
+                $("#btnLogin").append('@Lang.Register');
+                $("#btnLogin").removeClass('disabled');
+                return;
+            }
+            $("#btnLogin").hide("slow");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Register", "Auth")",
+                data: { name: name, phone: phone, email: email, pass: pass, gender: gender, role: role },
+                success: function(data) {
+                    if (data.state) {
+                        if (url != "") {
+                            window.location.href = url;
+                        } else {
+                            window.location.href =
+                                "/" + data.url.RouteValues[1].Value + "/" + data.url.RouteValues[0].Value;
+                        }
+                    } else {
+                        toastr.error('@Msg.errPhoneOrEmail');
+                        $('#btnLogin').find('i').remove();
+                        $("#btnLogin").removeClass('disabled');
+                        $("#btnLogin").show("slow");
+                    }
+                },
+                error: function(xhr) {
+                    $('#btnLogin').find('i').remove();
+                    $("#btnLogin").removeClass('disabled');
+                    $("#btnLogin").show("slow");
+                }
+            });
+            $("#btnLogin").show("slow");
+            $('#btnLogin').find('i').remove();
+            $("#btnLogin").removeClass('disabled');
+            $("#btnLogin").show("slow");
+        }
+    </script>
+}
+
+

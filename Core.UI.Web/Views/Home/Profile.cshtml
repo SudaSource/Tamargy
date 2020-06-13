@@ -1,0 +1,370 @@
+﻿@using Core.Data.Types
+@using Core.UI.Web.App_Start.Resources
+@model Core.Data.Models.User
+@{
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    List<SelectListItem> genders = new List<SelectListItem>();
+    List<SelectListItem> rols = new List<SelectListItem>();
+    //rols.Add(new SelectListItem
+    //{
+    //    Text = Lang.Citizen,
+    //    Value = "2",
+    //    Selected = ((int)Model.Gender == 1)
+    //});
+    //rols.Add(new SelectListItem
+    //{
+    //    Text = Lang.Doctor,
+    //    Value = "2",
+    //    Selected = ((int)Model.Gender == 1)
+    //});
+    //rols.Add(new SelectListItem
+    //{
+    //    Text = Lang.Pharmacist,
+    //    Value = "2",
+    //    Selected = ((int)Model.Gender == 1)
+    //});
+    //rols.Add(new SelectListItem
+    //{
+    //    Text = Lang.Citizen,
+    //    Value = "2",
+    //    Selected = ((int)Model.Gender == 1)
+    //});
+
+    genders.Add(new SelectListItem
+    {
+        Text = Lang.Male,
+        Value = "1",
+        Selected = ((int)Model.Gender == 1)
+    }); genders.Add(new SelectListItem
+    {
+        Text = Lang.Female,
+        Value = "2",
+        Selected = ((int)Model.Gender == 2)
+    }); genders.Add(new SelectListItem
+    {
+        Text = Lang.Other,
+        Value = "3",
+        Selected = ((int)Model.Gender == 3)
+    });
+    string role = "";
+    switch (Model.Role)
+    {
+        case Role.Admin:
+            role = Lang.Admin;
+            break;
+
+        case Role.Citizen:
+            role = Lang.Citizen;
+            break;
+
+        case Role.Doctor:
+            role = Lang.Doctor;
+            break;
+
+        case Role.Pharmacist:
+            role = Lang.Pharmacist;
+            break;
+        default:
+            role = Lang.Citizen;
+            break;
+
+    }
+}
+
+<div class="form-group" style="display: none;">
+    <span class="btn btn-primary btn-file">
+        @Lang.Image
+        @*@Html.EditorFor(x=>x.UpData, new { htmlAttributes = new { @class = "form-control" , @id = "UpData", @name="UpData"} })*@
+        <input type="file" id="UpData" name="UpData" />
+    </span>
+</div>
+
+<div class="modal modal-default fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="delete-dismiss">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="_curr" placeholder="@Lang.Password">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="_pass" placeholder="@Lang.NewPassword">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="_cpass" placeholder="@Lang.CPassword">
+                    </div>
+                </div>
+
+                <input type="hidden" id="SetToDelete" />
+                <input type="hidden" id="SetToDeleteType" />
+            </div>
+            <hr />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">@Options.Close</button>
+                <button type="button" onclick="ChangePassword()" class="btn btn-success">@Options.Save</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    @if (Model.Img != null)
+            {
+                        <img class="profile-user-img img-responsive img-circle" id="profile_image" onclick="ChangeImage()" src="@Url.Action("GetProfileImage", "_Image", new {id = Model.Id})" alt="User profile picture">
+                    }
+                    else
+                    {
+                        <img class="profile-user-img img-responsive img-circle" id="profile_image" onclick="ChangeImage()" src="~/Content/eng/dist/img/placeholder.png" alt="User profile picture" />
+                    }
+
+
+                    <h3 class="profile-username text-center">@Model.Name</h3>
+
+                    <p class="text-muted text-center">@role</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>
+<!-- /.col -->
+<div class="col-md-9">
+    <div class="card">
+        <div class="card-header p-2">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#timeline" data-toggle="tab">Timeline</a></li>
+                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+            </ul>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="active tab-pane" id="timeline">
+                </div>
+                <div class=" tab-pane" id="settings">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">@Lang.Name</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="_name" placeholder="@Lang.Name" value="@Model.Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">@Lang.Email</label>
+
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="_email" placeholder="@Lang.Name" value="@Model.Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">@Lang.Phone</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="_phone" placeholder="@Lang.Phone" value="@Model.Phone">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">@Lang.Gender</label>
+
+                            <div class="col-sm-10">
+                                @Html.DropDownListFor(model => model.Gender, genders, new { @class = "form-control", @id = "_gender" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">@Lang.State</label>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge badge-success">@Lang.Active</span>
+                            }
+                            else
+                            {
+                                <span for="inputName" class="badge badge-danger">@Lang.NotActive</span>
+
+                            }
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-sm  btn-success" onclick="UpdateProfile()">@Options.Update</button>
+                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" onclick="DeleteSet(@Model.Id)"> @Options.ChangePassword</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div><!-- /.card-body -->
+    </div>
+    <!-- /.nav-tabs-custom -->
+</div>
+<!-- /.col -->
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+           LoadTimeLine();
+        });
+        function ChangeImage() {
+            $("#UpData").click();
+            $("#UpData").change(function () {
+                readURL(this);
+            });
+        }
+
+        function LoadTimeLine() {
+            $.ajax({
+                type: "GET", 
+                url: "@Url.Action("TimeLine","Posts")",
+                datatype: "json", 
+                success: function(page) {
+                    $("#timeline").empty();
+                    $("#timeline").append(page);
+                }
+            });
+        }
+
+        function ChangePassword() {
+            var Pass = $("#_curr").val();
+            var newPass = $("#_pass").val();
+            var cPass = $("#_cpass").val();
+            if (Pass == "") {
+                return;
+            }
+            if (newPass == "") {
+                return;
+            }
+            if (cPass == "") {
+                return;
+            } if (cPass != newPass) {
+                $("#_cpass").val('');
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ChangeProfilePass", "Auth")",
+                data: { Pass: Pass, newPass: newPass, cPass: cPass },
+                datatype: "json",
+                traditional: true,
+                success: function(state) {
+                    if (state) {
+                        toastr.success('@Msg.SavedSuccessfuly');
+                    }
+                }
+            });
+            $("#delete-dismiss").click();
+        }
+
+        function UpdateProfile() {
+            var name = $("#_name").val();
+            var email = $("#_email").val();
+            var phone = $("#_phone").val();
+            var gender = $("select#_gender option").filter(":selected").val();
+            if (name == "") {
+                toastr.warning('@Msg.errName');
+                return;
+            }
+            if (email == "") {
+                toastr.warning('@Msg.errEmail');
+                return;
+            }
+            if (phone == "") {
+                toastr.warning('@Msg.errPhone');
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateProfile", "Auth")",
+                data: { name: name, phone: phone, email: email, gender: gender },
+                datatype: "json",
+                traditional: true,
+                success: function(state) {
+                    if (state) {
+                        LoadProfile();
+                    }
+                }
+            });
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profile_image').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+
+                var formData = new FormData();
+                var files = $("#UpData").get(0).files;
+
+                @*//formData.append("id", "@Model.Id");*@
+                formData.append("file", files[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SaveProfileImage", "Auth")",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(state) {
+                        if (state) {
+                            toastr.success('@Msg.SavedSuccessfuly');
+                        }
+                    },
+                    error: function(err) {
+                        $.notify("@Msg.Error", "error");
+                    }
+                });
+            }
+        }
+
+        function Comment(e,id) {
+            if (e.keyCode === 13) {
+                var comment = $("#_comm_" + id).val();
+                if (comment != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Comment", "Posts")",
+                        data:{id:id, text:comment},
+                        datatype: "json",
+                        traditional: true,
+                        success: function (data) {
+                            if (data) {
+                            LoadTimeLine();
+
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+}
+

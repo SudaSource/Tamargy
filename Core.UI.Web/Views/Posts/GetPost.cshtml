@@ -1,0 +1,249 @@
+﻿@using Core.Data.Models
+@using Core.Data.Types
+@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+@model Core.Lib.SDK.ViewModels.PostVM
+
+@{
+    var comm = Model.Comments.OrderBy(x => x.CreateDate);
+    bool allowComment = false;
+    User user = null;
+    try
+    {
+
+
+        var cookie = Request.Cookies["User"];
+        if (cookie != null)
+        {
+            long id = long.Parse(cookie["UserId"]);
+            user = UserControle.GetUser(id);
+            if (user != null)
+            {
+                allowComment = true;
+            }
+        }
+    }
+    catch (Exception e)
+    {
+        allowComment = false;
+    }
+    bool liked = false;
+    try
+    {
+        var like = Model.PostLikes.SingleOrDefault(x => x.User == user.Id);
+        if (like != null)
+        {
+            liked = true;
+        }
+    }
+    catch
+    {
+        liked = false;
+    }
+}
+
+
+<div class="col-md-9">
+    <!-- Box Comment -->
+    <div class="card card-widget">
+        <div class="card-header">
+            <div class="user-block">
+                @{
+                    if (Model.CreatedBy.Img != null)
+                    {
+                        <img class="img-circle" src="@Url.Action("GetProfileImage", "_Image", new {id = Model.CreatedBy.Id})" alt="User Image">
+                    }
+                    else
+                    {
+                        <img class="img-circle" src="~/Content/eng/dist/img/placeholder.png" alt="User Image">
+                        //
+                    }
+                }
+
+                <span class="username">
+                    <a href="#">
+                        @Model.CreatedBy.Name<span id="CreatedBy"></span>
+                    @{
+                        if (Model.CreatedBy.Role == Role.Admin)
+                        {
+                            <i class=" text-sm fa fa-star"></i>
+                        }
+                    }
+                </a>
+            </span>
+            <span class="description">@Model.CreateDate.ToString("dd/MM hh:mm")</span>
+            @{
+                switch (Model.CreatedBy.Role)
+                {
+                    case Role.Admin:
+                        <span class="description">@Lang.Admin</span>
+                        break;
+                    case Role.Pharmacist:
+                        <span class="description">@Lang.Pharmacist</span>
+                        break;
+                    case Role.Doctor:
+                        <span class="description">@Lang.Doctor</span>
+                        break;
+                    case Role.Citizen:
+                        <span class="description">@Lang.Citizen</span>
+                        break;
+                }
+            }
+        </div>
+        <!-- /.user-block -->
+        <div class="card-tools">
+            @{
+                if (user != null && user.Id == Model.CreatedBy.Id)
+                {
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" onclick="DeletePost(@Model.Id)"><i class="fas fa-times"></i>
+                    </button>
+                  
+                }
+            }
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+
+        </div>
+        <!-- /.card-tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        @{
+            if (Model.PostType == PostType.Need)
+            {
+                <span class="badge badge-info">@Lang.Need</span>
+            }
+            else
+            {
+                <span class="badge badge-success">@Lang.Provider</span>
+            }
+        }
+        <!-- post text -->
+        <b>@Model.MedicineNameAr, @Model.MedicineNameEng</b>
+        <hr />
+        <p>
+            @Model.Text
+        </p>
+        <!-- Social sharing buttons -->
+        @{
+            if (user != null)
+            {
+
+                if (liked)
+                {
+                    <button id="_btnLike-@Model.Id" type="button" class="btn btn-default btn-sm" style="background-color: blue; color: aliceblue" onclick="Like(@Model.Id, false)">
+                        <i class="far fa-thumbs-up"></i> @Lang.Like
+                    </button>
+                }
+                else
+                {
+                    <button id="_btnLike-@Model.Id" type="button" class="btn btn-default btn-sm" onclick="Like(@Model.Id, true)">
+                        <i class="far fa-thumbs-up"></i> @Lang.Like
+                    </button>
+                }
+
+            }
+
+
+            @*<button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-share"></i> @Lang.Share
+                </button>
+
+                <button id="_like" type="button" class="btn btn-default btn-sm" onclick="Like(@Model.Id)">
+                    <i class="far fa-thumbs-up"></i> @Lang.Like
+                </button>*@
+        }
+        <span class="float-right text-muted">@Model.Likes @Lang.likes -@Model.Comments.Count @Lang.comments</span>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer card-comments" id="_comments_list_@Model.Id">
+        @{
+            foreach (var c in comm)
+            {
+                <div class="card-comment">
+
+                    @{
+                        if (c.CreatedBy.Img != null)
+                        {
+                            <img class="img-circle img-sm" src="@Url.Action("GetProfileImage", "_Image", new {id = c.CreatedBy.Id})" alt="User Image">
+                        }
+                        else
+                        {
+                            <img class="img-circle img-sm" src="~/Content/eng/dist/img/placeholder.png" alt="User Image">
+                        }
+                    }
+                    <!-- User image -->
+                    @{
+                        if (user != null && c.CreatedBy.Id == user.Id)
+                        {
+                            <button onclick="DeleteComment(@c.Id)" type="button" class="btn btn-tool btn-sm">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        }
+                    }
+                    
+                    <div class="comment-text">
+                        <span class="username">
+                            @c.CreatedBy.Name
+                            @{
+                                switch (Model.CreatedBy.Role)
+                                {
+                                    case Role.Admin:
+                                        <span class="text-muted">@Lang.Admin</span>
+                                        break;
+                                    case Role.Pharmacist:
+                                        <span class="text-muted">@Lang.Pharmacist</span>
+                                        break;
+                                    case Role.Doctor:
+                                        <span class="text-muted">@Lang.Doctor</span>
+                                        break;
+                                    case Role.Citizen:
+                                        <span class="text-muted">@Lang.Citizen</span>
+                                        break;
+                                }
+                            }
+                            &nbsp;<span class="text-muted float-right">@c.CreateDate.ToString("dd/MM - hh:mm")</span>
+                        </span><!-- /.username -->
+                        @c.Text
+                    </div>
+                    <!-- /.comment-text -->
+                </div>
+                        }
+        }
+    </div>
+
+    @{
+
+        if (Model.AllowComment)
+        {
+            <div class="card-footer">
+                <form action="#" method="post">
+                    @{
+                        if (user.Img != null)
+                        {
+                            <img class="img-circle img-sm" src="@Url.Action("GetProfileImage", "_Image", new {id = user.Id})" alt="User Image">
+                        }
+                        else
+                        {
+                            <img class="img-circle img-sm" src="~/Content/eng/dist/img/placeholder.png" alt="User Image">
+                        }
+                    }
+
+                    <div class="img-push">
+                        <input type="text" maxlength="250" onkeypress="Comment(event, @Model.Id)" id="_comm_@Model.Id" class="form-control form-control-sm" placeholder="@Msg.CommentIns">
+                    </div>
+                </form>
+            </div>
+                        }
+                        else
+                        {
+                            <div class="card-footer">
+                                <a href="@Url.Action("Index","Home")">@Msg.LoginToComment</a>
+                            </div>
+                        }
+    }
+
+</div>
+<!-- /.card -->
+</div>

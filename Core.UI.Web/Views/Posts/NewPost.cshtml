@@ -1,0 +1,35 @@
+﻿@using Core.UI.Web.App_Start.Resources
+
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <input type="text" class="form-control" id="nameAr" name="UserName" placeholder="@Lang.MedicalNameAr" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <input type="text" class="form-control" id="nameEng" name="UserName" placeholder="@Lang.MedicalNameEng" />
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>@Lang.MedicalNameEng</label>
+            <select class="form-control" id="type">
+                <option value="1">@Lang.Provider</option>
+                <option value="2">@Lang.Need</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@Lang.Post (250 Character | حرف)</label>
+            <textarea class="form-control" id="post" maxlength="250" cols="3" rows="2"></textarea>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-block btn-success" id="btn" onclick="Save()">@Options.Save</button>
+    </div>

@@ -1,0 +1,318 @@
+﻿@using Core.Data.Models
+@using Core.Data.Types
+@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+
+
+@{
+
+    try
+    {
+
+        string lang = "en";
+        User user = null;
+        var cookie = Request.Cookies["User"];
+        if (cookie != null)
+        {
+            long id = long.Parse(cookie["UserId"]);
+            user = UserControle.GetUser(id);
+        }
+        else
+        {
+
+            //Response.Redirect("~/Home/Index?url=" + Request.Url.AbsoluteUri);
+
+        }
+        HttpCookie langCookie = Request.Cookies["culture"];
+        if (langCookie != null)
+        {
+            lang = langCookie.Value;
+        }
+
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>@Lang.ApplicationName</title>
+            <link rel="shortcut icon" type="image/x-icon" href="~/Content/eng/dist/img/logo.ico" />
+            <!-- Tell the browser to be responsive to screen width -->
+            <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+            @*@{
+                if (lang == "en")
+                {
+                }
+                else
+                {
+
+                }
+            }*@
+            <!-- Bootstrap 3.3.6 -->
+            <!-- Google Font: Source Sans Pro -->
+
+
+            <link rel="stylesheet" href="~/Content/eng/plugins/fontawesome-free/css/all.min.css">
+            <!-- Ionicons -->
+            <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+            <!-- daterange picker -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/daterangepicker/daterangepicker.css">
+            <!-- iCheck for checkboxes and radio inputs -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+            <!-- Bootstrap Color Picker -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+            <!-- Tempusdominus Bbootstrap 4 -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+            <!-- Select2 -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/select2/css/select2.min.css">
+            <link rel="stylesheet" href="~/Content/eng/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+            <!-- Bootstrap4 Duallistbox -->
+            <link rel="stylesheet" href="~/Content/eng/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+            <!-- Theme style -->
+            <link rel="stylesheet" href="~/Content/eng/dist/css/adminlte.min.css">
+
+            <link rel="stylesheet" href="~/Content/eng/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+            
+            <link rel="stylesheet" href="~/Content/eng/plugins/toastr/toastr.min.css">
+            <link rel="stylesheet" href="~/Content/loading.css"/>
+
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        </head>
+        <body class="hold-transition layout-top-nav">
+            <div class="wrapper">
+                <!-- Navbar -->
+                <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+                    <div class="container">
+                        <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                            <img src="~/Content/eng/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                 style="opacity: .8">
+                            <span class="brand-text font-weight-light">@Lang.ApplicationName</span>
+                        </a>
+
+                        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                            <!-- Left navbar links -->
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Home")" class="nav-link">@Lang.Home</a>
+                                </li>
+                                @{
+                                    if (user == null)
+                                    {
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("Index", "Home")" class="nav-link">@Lang.Login</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("Logout", "Home")" class="nav-link">@Lang.Logout</a>
+                                        </li>
+                                    }
+                                }
+
+                                <li class="nav-item dropdown">
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">@Lang.Language</a>
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        @{
+                                            foreach (var i in LanguageMang.AvailableLanguages)
+                                            {
+                                                <li class="nav-item">
+                                                    <a href="@if (Request.Url != null)
+                                                             {
+                                                                 @Url.Action("ChangeLanguage", "Home",
+                                                                     new
+                                                                     {
+                                                                         lang = i.LanguageCultureName,
+                                                                         url = Request.Url.AbsoluteUri
+                                                                     })
+                                                             }"
+                                                       class="dropdown-item">
+                                                        @i.LanguageFullName
+                                                    </a>
+                                                </li>
+
+                                            }
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <!-- SEARCH FORM -->
+                            @*<form class="form-inline ml-0 ml-md-3">
+                                    <div class="input-group input-group-sm">
+                                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-navbar" type="submit">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>*@
+                        </div>
+
+                        <!-- Right navbar links -->
+                        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+
+                            <!-- Notifications Dropdown Menu -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="far fa-bell"></i>
+                                    <span class="badge badge-warning navbar-badge"></span>
+                                </a>
+                                @*<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                        <span class="dropdown-header">15 Notifications</span>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                                            <span class="float-right text-muted text-sm">3 mins</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                                            <span class="float-right text-muted text-sm">12 hours</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-file mr-2"></i> 3 new reports
+                                            <span class="float-right text-muted text-sm">2 days</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                                    </div>*@
+
+                            @{
+                                if (user != null)
+                                {
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Profile", "Home")" class="nav-link">@Lang.Profile</a>
+                                    </li>
+
+                                }
+                            }
+                         
+                                    @{
+                                        if (user != null && user.Img != null)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                                                <li class="nav-item">
+                                                    <img class="img-fluid img-circle img-sm" src="@Url.Action("GetProfileImage", "_Image", new {id = user.Id})" alt="Alt Text">
+                                                </li>
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                                                    <li class="nav-item">
+                                                        <img class="img-fluid img-circle img-sm" src="~/Content/eng/dist/img/placeholder.png" alt="">
+                                                    </li>
+                                                </a>
+                                            </li>
+                                            
+                                        }
+                                    }
+
+                                   
+                                </ul>
+                            </div>
+                        </nav>
+                        <!-- /.navbar -->
+                        <!-- Content Wrapper. Contains page content -->
+                        <div class="content-wrapper">
+                            <!-- Content Header (Page header) -->
+                            <div class="content-header">
+                                <div class="container">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-6">
+                                            <h1 class="m-0 text-dark"> @Lang.ApplicationName<small></small></h1>
+                                        </div><!-- /.col -->
+                                        @*<div class="col-sm-6">
+                                                <ol class="breadcrumb float-sm-right">
+                                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                                    <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                                                    <li class="breadcrumb-item active">Top Navigation</li>
+                                                </ol>
+                                            </div>*@<!-- /.col -->
+                                    </div><!-- /.row -->
+                                </div><!-- /.container-fluid -->
+                            </div>
+                            <!-- /.content-header -->
+                            <!-- Main content -->
+                            <div class="content">
+                                <div class="container">
+
+                                    @RenderBody()
+                                    <!-- /.row -->
+                                </div><!-- /.container-fluid -->
+                            </div>
+                            <!-- /.content -->
+                        </div>
+                        <!-- /.content-wrapper -->
+                        <!-- Control Sidebar -->
+                        <!-- /.control-sidebar -->
+                        <!-- Main Footer -->
+                        <footer class="main-footer">
+                            <div class="float-right d-none d-sm-block-down">
+                                @Lang.ApplicationName
+                            </div>
+                            <strong>@Lang.Copyright &copy; @DateTime.Now.Year <a href="#"> @Lang.ApplicationName</a>.</strong> @Lang.AllRightsreserved.
+                        </footer>
+                    </div>
+                    <!-- ./wrapper -->
+                    <!-- REQUIRED SCRIPTS -->
+                    @*@{
+                        if (lang == "en")
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                    }*@
+
+
+                    <!-- jQuery -->
+                    <script src="~/Content/eng/plugins/jquery/jquery.min.js"></script>
+                    <!-- Bootstrap 4 -->
+                    <script src="~/Content/eng/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    <!-- Select2 -->
+                    <script src="~/Content/eng/plugins/select2/js/select2.full.min.js"></script>
+                    <!-- Bootstrap4 Duallistbox -->
+                    <script src="~/Content/eng/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+                    <!-- InputMask -->
+                    <script src="~/Content/eng/plugins/moment/moment.min.js"></script>
+                    <script src="~/Content/eng/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+                    <!-- date-range-picker -->
+                    <script src="~/Content/eng/plugins/daterangepicker/daterangepicker.js"></script>
+                    <!-- bootstrap color picker -->
+                    <script src="~/Content/eng/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+                    <!-- Tempusdominus Bootstrap 4 -->
+                    <script src="~/Content/eng/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+                    <!-- Bootstrap Switch -->
+                    <script src="~/Content/eng/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+                    <!-- AdminLTE App -->
+                    <script src="~/Content/eng/dist/js/adminlte.min.js"></script>
+                    <script src="~/Content/eng/plugins/toastr/toastr.min.js"></script>
+                    <!-- AdminLTE for demo purposes -->
+                    <script src="~/Content/eng/dist/js/demo.js"></script>
+                    <!-- Page script -->
+                    <script src="~/Content/eng/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+
+                    @RenderSection("scripts", required: false)
+                </body>
+            </html>
+                        }
+                        catch (Exception e)
+                        {
+                            Response.Redirect("~/Home/Index?url=" + Request.Url.AbsoluteUri);
+                        }
+}

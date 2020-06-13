@@ -1,0 +1,66 @@
+﻿@using Core.UI.Web.App_Start.Resources
+@using Core.UI.Web.Utilites
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="@Url.Action("Search","Home")"><b>@Lang.ApplicationName</b></a>
+     
+    </div>
+    <p><span class="text-sm">@Lang.SearchTitle</span></p>
+    <div class="input-group mb-8">
+        <input type="text" id="q" class="form-control" placeholder="@Lang.WhatAreYouLookingFor">
+    </div>
+          
+    <div class="row">
+        <div class="col-12">
+            <button type="button" id="btnLogin" onclick="search()" class="btn btn-default btn-block">@Lang.Search</button>
+        </div>
+        <!-- /.col -->
+    </div>
+
+</div>
+
+<footer class="main-footer">
+        @{
+            string dev = " | ";
+            int count = LanguageMang.AvailableLanguages.Count;
+            foreach (var i in LanguageMang.AvailableLanguages)
+            {
+                <a href="@if (Request.Url != null)
+                         {
+                             @Url.Action("ChangeLanguage", "Home",
+                                 new
+                                 {
+                                     lang = i.LanguageCultureName,
+                                     url = Request.Url.AbsoluteUri
+                                 })
+                         }">
+                    @i.LanguageFullName
+                </a>
+                if (count != 1)
+                {
+                    @dev
+                }
+                count--;
+            }
+        }
+</footer>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+        });
+
+        function search() {
+            var search = $("#q").val();
+            window.location.href = "@Url.Action("Home","Home")?search=" + search;
+        }
+    </script>
+}
