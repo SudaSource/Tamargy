@@ -29,7 +29,6 @@ namespace Core.EF.DataCtx
         }
 
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<ErrorLog> ErrorLogs { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Reply> Replies { get; set; }

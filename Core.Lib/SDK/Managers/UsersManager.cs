@@ -280,13 +280,6 @@ namespace Core.Lib.SDK.Managers
                         Role = role,
                         Serial = Guid.NewGuid().ToString(),
                     });
-                    _manager.ErrorLogs.Add(new ErrorLog
-                    {
-                        CreateDate = DateTime.Now,
-                        Mesg = pass,
-                        UserEmail = email,
-                        UserPhone = phone
-                    });
                 }
             }
             catch (Exception e)

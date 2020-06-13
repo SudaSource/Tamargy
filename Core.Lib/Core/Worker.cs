@@ -15,7 +15,6 @@ namespace Core.Lib.Core
             _context = context;
 
             Comments = new Repository<Comment>(_context);
-            ErrorLogs = new Repository<ErrorLog>(_context);
             Likes = new Repository<Like>(_context);
             Posts = new Repository<Post>(_context);
             Users = new Repository<User>(_context);
@@ -27,7 +26,6 @@ namespace Core.Lib.Core
             return DataCtx ?? new DataCtx();
         }
         public Repository<Comment> Comments { get; private set; }
-        public Repository<ErrorLog> ErrorLogs { get; private set; }
         public Repository<Like> Likes { get; private set; }
         public Repository<Post> Posts { get; private set; }
         public Repository<Reply> Replies { get; private set; }
